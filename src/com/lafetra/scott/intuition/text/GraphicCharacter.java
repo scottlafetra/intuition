@@ -14,7 +14,7 @@ public class GraphicCharacter extends Rectangle {
 	
 	private int leftBound, rightBound;
 	
-	GraphicCharacter(int leftBound, int rightBound) {
+	GraphicCharacter(int leftBound, int rightBound, int row) {
 		super(0, 0, rightBound - leftBound, CharacterLoader.CHAR_HEIGHT);
 		
 		this.leftBound  = leftBound;
