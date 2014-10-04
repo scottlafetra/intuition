@@ -14,6 +14,8 @@ public class CharacterLoader {
 	
 	public static final int CHAR_HEIGHT = 200;
 	public static final int CHAR_WIDTH = 200;
+	public static final int MAX_TEXT_WIDTH = 2000;
+	public static final int CHARACTERS_PER_ROW = 10;
 	private static HashMap<String, Integer>   charCorrections = null;
 	
 	protected static Texture texture;
@@ -69,19 +71,19 @@ public class CharacterLoader {
 		
 		if((toGet >= 'a') && (toGet <= 'z')){
 			
-			return new GraphicCharacter((toGet - 'a') * CHAR_WIDTH, ((toGet - 'a') + 1) * CHAR_WIDTH - charCorrections.get(String.valueOf(toGet)));//Adds the 'a' back in for correction lookup
+			return new GraphicCharacter(((toGet - 'a') * CHAR_WIDTH)%MAX_TEXT_WIDTH, (((toGet - 'a') + 1) * CHAR_WIDTH - charCorrections.get(String.valueOf(toGet)))%MAX_TEXT_WIDTH, (toGet - 'a')/CHARACTERS_PER_ROW);//Adds the 'a' back in for correction lookup
 			
 		} else if(toGet == '.'){	
-			return new GraphicCharacter(27 * CHAR_WIDTH, 28 * CHAR_WIDTH - charCorrections.get('.'));
+			return new GraphicCharacter((27 * CHAR_WIDTH)%MAX_TEXT_WIDTH, (28 * CHAR_WIDTH - charCorrections.get('.'))%MAX_TEXT_WIDTH, 3);
 			
 		} else if(toGet == ':'){
-			return new GraphicCharacter(28 * CHAR_WIDTH, 29 * CHAR_WIDTH - charCorrections.get(':'));
+			return new GraphicCharacter((28 * CHAR_WIDTH)%MAX_TEXT_WIDTH, (29 * CHAR_WIDTH - charCorrections.get(':'))%MAX_TEXT_WIDTH, 3);
 			
 		} else if(toGet == '-'){
-			return new GraphicCharacter(29 * CHAR_WIDTH, 30 * CHAR_WIDTH - charCorrections.get('-'));
+			return new GraphicCharacter((29 * CHAR_WIDTH)%MAX_TEXT_WIDTH, (30 * CHAR_WIDTH - charCorrections.get('-'))%MAX_TEXT_WIDTH, 3);
 			
 		} else if(toGet == ','){
-			return new GraphicCharacter(30 * CHAR_WIDTH, 31 * CHAR_WIDTH - charCorrections.get(','));
+			return new GraphicCharacter((30 * CHAR_WIDTH)%MAX_TEXT_WIDTH, (31 * CHAR_WIDTH - charCorrections.get(','))%MAX_TEXT_WIDTH, 3);
 			
 		} else throw new IllegalArgumentException(toGet + " is not an accepted character!");
 	}
