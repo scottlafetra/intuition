@@ -12,13 +12,15 @@ import com.lafetra.scott.intuition.geom.TransformMatrix;
 
 public class GraphicCharacter extends Rectangle {
 	
-	private int leftBound, rightBound;
+	private int leftBound, rightBound, row, rowHeight;
 	
 	GraphicCharacter(int leftBound, int rightBound, int row, int height) {
 		super(0, 0, rightBound - leftBound, height);
 		
 		this.leftBound  = leftBound;
 		this.rightBound = rightBound;
+		this.row = row;
+		this.rowHeight = height/CharacterLoader.CHAR_ROWS;
 	}
 	
 	@Override
@@ -33,20 +35,20 @@ public class GraphicCharacter extends Rectangle {
 		
 		texture.bind();
 		
+		glColor4f(1, 1, 1, 1);//reset color
+		
 		glBegin(GL_QUADS);
 		
-			glColor4f(1, 1, 1, 1);//reset color
-		
-			glTexCoord2f(leftBoundf, 0);
+			glTexCoord2f(leftBoundf, (rowHeight*row)/(float)height);
 			points[0].draw(toApply);
 			
-			glTexCoord2f(rightBoundf, 0);
+			glTexCoord2f(rightBoundf, (rowHeight*row)/(float)height);
 			points[1].draw(toApply);
 			
-			glTexCoord2f(rightBoundf, 1);
+			glTexCoord2f(rightBoundf, (rowHeight*(row + 1))/(float)height);
 			points[2].draw(toApply);
 			
-			glTexCoord2f(leftBoundf, 1);
+			glTexCoord2f(leftBoundf, (rowHeight*(row + 1))/(float)height);
 			points[3].draw(toApply);
 			
 		glEnd();

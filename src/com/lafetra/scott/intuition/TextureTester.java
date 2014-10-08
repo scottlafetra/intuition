@@ -28,19 +28,20 @@ public class TextureTester {
 		}
 		
 		//Init OpenGL
-		glEnable(GL_TEXTURE_2D);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, WIDTH, HEIGHT, 0, 1, -1);//Depth is 1, -1 because 2D
+		glMatrixMode(GL_MODELVIEW);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		glMatrixMode(GL_MODELVIEW);
+		glEnable(GL_TEXTURE_2D);
 		
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0, WIDTH, HEIGHT, 0, 1, -1);//Depth is 1, -1 because 2D
+		glClearColor(1, 0, 0, 1);
 		
 		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("testText2.png"));
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("text.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,6 +59,8 @@ public class TextureTester {
 			glClear(GL_COLOR_BUFFER_BIT);
 			
 			texture.bind();
+			
+			glColor4f(1, 1, 1, 1);//reset color
 			
 			glBegin(GL_QUADS);
 				glTexCoord2f(0, 0);

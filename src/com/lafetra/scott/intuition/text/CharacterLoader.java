@@ -21,6 +21,7 @@ public class CharacterLoader {
 	public static final int SMALL_MAX_WIDTH = 2000;
 	
 	public static final int CHARACTERS_PER_ROW = 10;
+	public static final int CHAR_ROWS = 3;
 	private static HashMap<String, Integer>   charCorrections = null;
 	
 	public int charWidth;
