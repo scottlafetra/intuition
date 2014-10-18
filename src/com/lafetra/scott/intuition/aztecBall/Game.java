@@ -1,5 +1,6 @@
 package com.lafetra.scott.intuition.aztecBall;
-
+//Current Issue to fix:
+//When loading a transparent texture, everything is drawn transparently.
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -87,6 +88,8 @@ public class Game {
 		
 		glEnable(GL_TEXTURE_2D);
 		
+		glClearColor(1, 0, 0, 1);
+		
 		state = State.PLAYING;
 		threePlayer = false;
 		redPoints = 0.5f;
@@ -147,10 +150,10 @@ public class Game {
 		
 		//TODO:Remove, for testing only
 		try{
-			CharacterLoader loader = new CharacterLoader("testText.png");
+			CharacterLoader loader = new CharacterLoader("text-solid.png", true);//TODO: Make dynamic, remove small text case if it is not necessary
 			testChar = loader.getChar('e');
 			testChar.move(HEIGHT/2.0, WIDTH/2.0);
-			//scene.add(testChar);
+			scene.add(testChar);
 			
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
@@ -158,10 +161,7 @@ public class Game {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
-		}
-		
-		
-		
+		}	
 	}
 	
 	public void run(){
@@ -237,12 +237,11 @@ public class Game {
 	}
 
 	private void render(){
-		glClear(GL_COLOR_BUFFER_BIT);
-		glLoadIdentity();
+		glClear(GL_COLOR_BUFFER_BIT);  
 		
 		back.draw();
 		scene.draw();
-		testChar.draw();
+		//testChar.draw();
 
 		Display.update();
 		Display.sync(120);//max FPS
