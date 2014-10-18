@@ -32,7 +32,7 @@ public class GraphicCharacter extends Rectangle {
 		
 		float leftBoundf  = (float)leftBound/(float)(texture.getImageWidth());
 		float rightBoundf = (float)rightBound/(float)(texture.getImageWidth());
-		
+		glEnable(GL_TEXTURE_2D);
 		texture.bind();
 		
 		glColor4f(1, 1, 1, 1);//reset color
@@ -52,6 +52,8 @@ public class GraphicCharacter extends Rectangle {
 			points[3].draw(toApply);
 			
 		glEnd();
+		
+		glDisable(GL_TEXTURE_2D);
 	}
 	
 

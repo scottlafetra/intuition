@@ -53,7 +53,6 @@ abstract public class Polygon extends Leveled implements Shape /*, Collidable*/{
 	@Override
 	public void draw(ArrayList<TransformMatrix> trans) {
 		glColor4f(r, g, b, a);
-		System.out.println(r + " " + g + " " + b + " " + a);
 		
 		ArrayList<TransformMatrix> toApply = (ArrayList<TransformMatrix>) trans.clone();
 		toApply.add(getToHigher());

@@ -3,10 +3,12 @@ package com.lafetra.scott.intuition;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.io.IOException;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -42,7 +44,7 @@ public class TextureTester {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		glEnable(GL_TEXTURE_2D);
+		
 		
 		glClearColor(1, 0, 0, 1);
 		
@@ -70,14 +72,13 @@ public class TextureTester {
 				System.exit(0);
 			}
 			
+			if(Keyboard.isKeyDown(Keyboard.KEY_R)) texture.release();
+			
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			
-			
-			//drawTexture();
+			drawTexture();
 			
 			scene.draw();
-			
 			
 			Display.update();
 			Display.sync(120);//max FPS
@@ -85,7 +86,7 @@ public class TextureTester {
 	}
 	
 	private void drawTexture(){
-		
+		glEnable(GL_TEXTURE_2D);
 		texture.bind();
 		
 		glColor4f(1, 1, 1, 1);//reset color
@@ -103,6 +104,9 @@ public class TextureTester {
 			glTexCoord2f(0, 1);
 			glVertex2d(100, 200);
 		glEnd();
+		
+
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	public static void main(String[] args) {
