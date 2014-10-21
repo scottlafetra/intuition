@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_QUADS;
 
 public class Rectangle extends Polygon{
 	
-	public double height, width;
+	private double height, width;
 	
 	/**
 	 * Constructs a rectangle.

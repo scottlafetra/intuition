@@ -20,6 +20,7 @@ import com.lafetra.scott.intuition.physics.PhysicsOperator;
 import com.lafetra.scott.intuition.physics.TangibleGroup;
 import com.lafetra.scott.intuition.text.CharacterLoader;
 import com.lafetra.scott.intuition.text.GraphicCharacter;
+import com.lafetra.scott.intuition.text.GraphicString;
 
 public class Game {
 	
@@ -32,6 +33,7 @@ public class Game {
 	}
 	
 	public static boolean twoPlayers;
+
 	
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
@@ -62,7 +64,7 @@ public class Game {
 	private Ball blueBall;
 	private Ball greenBall;
 	
-	private GraphicCharacter testChar;//TODO: remove
+	private GraphicString testString;//TODO: remove
 
 	
 	public Game(){
@@ -148,10 +150,10 @@ public class Game {
 		
 		//TODO:Remove, for testing only
 		try{
-			CharacterLoader loader = new CharacterLoader("text-solid.png", true);//TODO: Make dynamic, remove small text case if it is not necessary
-			testChar = loader.getChar('e');
-			testChar.move(HEIGHT/2.0, WIDTH/2.0);
-			scene.add(testChar);
+			CharacterLoader loader = new CharacterLoader("text.png");//TODO: Make dynamic, remove small text case if it is not necessary
+			testString = new GraphicString("abcdef", 150, "text.png");
+			testString.move(WIDTH/8.0, HEIGHT/2.0);
+			scene.add(testString);
 			
 		} catch (FileNotFoundException e){
 			e.printStackTrace();

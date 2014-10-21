@@ -7,20 +7,20 @@ import static com.lafetra.scott.intuition.text.CharacterLoader.*;
 
 import java.util.ArrayList;
 
+import com.lafetra.scott.intuition.aztecBall.Game;
 import com.lafetra.scott.intuition.geom.Rectangle;
 import com.lafetra.scott.intuition.geom.TransformMatrix;
 
 public class GraphicCharacter extends Rectangle {
 	
-	private int leftBound, rightBound, row, rowHeight;
+	private int leftBound, rightBound, row;
 	
 	GraphicCharacter(int leftBound, int rightBound, int row, int height) {
-		super(0, 0, rightBound - leftBound, height);
+		super(0, 0, (rightBound - leftBound)*(height/(float)CharacterLoader.HEIGHT), height);
 		
 		this.leftBound  = leftBound;
 		this.rightBound = rightBound;
 		this.row = row;
-		this.rowHeight = height/CharacterLoader.CHAR_ROWS;
 	}
 	
 	@Override
@@ -30,8 +30,8 @@ public class GraphicCharacter extends Rectangle {
 		toApply.add(getToHigher());
 	
 		
-		float leftBoundf  = (float)leftBound/(float)(texture.getImageWidth());
-		float rightBoundf = (float)rightBound/(float)(texture.getImageWidth());
+		float leftBoundf  = (float)leftBound/(float)(texture.getTextureWidth());
+		float rightBoundf = (float)rightBound/(float)(texture.getTextureWidth());
 		glEnable(GL_TEXTURE_2D);
 		texture.bind();
 		
@@ -39,16 +39,16 @@ public class GraphicCharacter extends Rectangle {
 		
 		glBegin(GL_QUADS);
 		
-			glTexCoord2f(leftBoundf, (rowHeight*row)/(float)height);
+			glTexCoord2f(leftBoundf, (CharacterLoader.HEIGHT*row)/(float)texture.getTextureHeight());
 			points[0].draw(toApply);
 			
-			glTexCoord2f(rightBoundf, (rowHeight*row)/(float)height);
+			glTexCoord2f(rightBoundf, (CharacterLoader.HEIGHT*row)/(float)texture.getTextureHeight());
 			points[1].draw(toApply);
 			
-			glTexCoord2f(rightBoundf, (rowHeight*(row + 1))/(float)height);
+			glTexCoord2f(rightBoundf, (CharacterLoader.HEIGHT*(row + 1))/(float)texture.getTextureHeight());
 			points[2].draw(toApply);
 			
-			glTexCoord2f(leftBoundf, (rowHeight*(row + 1))/(float)height);
+			glTexCoord2f(leftBoundf, (CharacterLoader.HEIGHT*(row + 1))/(float)texture.getTextureHeight());
 			points[3].draw(toApply);
 			
 		glEnd();

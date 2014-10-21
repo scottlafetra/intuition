@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Point extends Leveled implements Transformable{
 
-	private double x, y;
+	private double x, y;//In relation to higher plane only
 	
 	public Point(double x, double y){
 		this.x = x;
@@ -14,11 +14,11 @@ public class Point extends Leveled implements Transformable{
 	}
 	
 	public double getX(){
-		return x;
+		return x + super.getX();
 	}
 	
 	public double getY(){
-		return y;
+		return y + super.getY();
 	}
 	
 
