@@ -111,8 +111,6 @@ public class PhysicsOperator {
 			vel = item.getVelocity();
 			item.smearMove(0, vel.getY()*time*METERS_PER_PIXEL);//Move y
 			
-			//Game.body.animate();
-			
 			//Check Collision y
 			if(vel.getY() != 0){
 				for(Tangible item2 : tangible){
@@ -128,7 +126,7 @@ public class PhysicsOperator {
 				}
 			}
 			
-			item.setContact(true);//Finish up contact
+			item.setContact(contact);//Finish up contact
 			
 			item.releaseSmear();
 		}

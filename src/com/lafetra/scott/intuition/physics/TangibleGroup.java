@@ -283,15 +283,8 @@ public class TangibleGroup extends PhysicsGroup implements Tangible{
 
 
 	@Override
-	public void setContact(boolean contact) {
-		
-		//TODO: remove
-		if(inContact && !contact)
-			System.out.println("beep!");
-			
+	public void setContact(boolean contact) {	
 		inContact = contact;
-		
-		
 	}
 
 	@Override
