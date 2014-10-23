@@ -151,8 +151,8 @@ public class Game {
 		//TODO:Remove, for testing only
 		try{
 			CharacterLoader loader = new CharacterLoader("text.png");//TODO: Make dynamic, remove small text case if it is not necessary
-			testString = new GraphicString("abcdef", 150, "text.png");
-			testString.move(WIDTH/8.0, HEIGHT/2.0);
+			testString = new GraphicString("w-a-s-d to move,\nspace to jump.", 50, "text.png");
+			testString.move(WIDTH/8.0, HEIGHT/4.0 + HEIGHT/8.0);
 			scene.add(testString);
 			
 		} catch (FileNotFoundException e){

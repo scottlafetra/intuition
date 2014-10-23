@@ -19,7 +19,7 @@ public class CharacterLoader {
 	public static final int CHARS_PER_ROW = 10;
 	public static final int CHAR_ROWS = 3;
 	
-	public static final int KERNING = 20;//20 is max due to w
+	public static final int KERNING = 15;//20 is max due to w
 	
 	private static HashMap<String, Integer>   charSpecificWidths = null;
 	
@@ -68,7 +68,7 @@ public class CharacterLoader {
 		
 		charSpecificWidths.put(".", new Integer(36));
 		charSpecificWidths.put(":", new Integer(19));
-		charSpecificWidths.put("-", new Integer(91));
+		charSpecificWidths.put("-", new Integer(53));
 		charSpecificWidths.put(",", new Integer(37));
 		
 	}
@@ -84,16 +84,16 @@ public class CharacterLoader {
 			return new GraphicCharacter(((toGet - 'a') * WIDTH)%MAX_WIDTH, ((toGet - 'a' + 1) * WIDTH - getCharCorection(toGet))%MAX_WIDTH, (toGet - 'a')/CHARS_PER_ROW, size);//Adds the 'a' back in for correction lookup
 			
 		} else if(toGet == '.'){	
-			return new GraphicCharacter((27 * HEIGHT)%MAX_WIDTH, (28 * HEIGHT - getCharCorection('.'))%MAX_WIDTH, 3, size);
+			return new GraphicCharacter((26 * WIDTH)%MAX_WIDTH, (27 * WIDTH - getCharCorection('.'))%MAX_WIDTH, 2, size);
 			
 		} else if(toGet == ':'){
-			return new GraphicCharacter((28 * HEIGHT)%MAX_WIDTH, (29 * HEIGHT - getCharCorection(':'))%MAX_WIDTH, 3, size);
+			return new GraphicCharacter((27 * WIDTH)%MAX_WIDTH, (28 * WIDTH - getCharCorection(':'))%MAX_WIDTH, 2, size);
 			
 		} else if(toGet == '-'){
-			return new GraphicCharacter((29 * HEIGHT)%MAX_WIDTH, (30 * HEIGHT - getCharCorection('-'))%MAX_WIDTH, 3, size);
+			return new GraphicCharacter((28 * WIDTH)%MAX_WIDTH, (29 * WIDTH - getCharCorection('-'))%MAX_WIDTH, 2, size);
 			
 		} else if(toGet == ','){
-			return new GraphicCharacter((30 * HEIGHT)%MAX_WIDTH, (31 * HEIGHT - getCharCorection(','))%MAX_WIDTH, 3, size);
+			return new GraphicCharacter((29 * WIDTH)%MAX_WIDTH, (30 * WIDTH - getCharCorection(','))%MAX_WIDTH, 2, size);
 			
 		} else throw new IllegalArgumentException(toGet + " is not an accepted character!");
 	}

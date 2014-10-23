@@ -8,18 +8,21 @@ import com.lafetra.scott.intuition.geom.ShapeGroup;
 
 public class GraphicString extends ShapeGroup {
 	
-	private static final int SPACE_WIDTH = 200;
+	private static final int SPACE_WIDTH = 75;
 	
 	public Point addPoint;//where to add new characters
+	
+	private int size;
 
-	public GraphicString() {
+	public GraphicString(int size) {
 		
 		addPoint = new Point(0, 0);
+		this.size = size;
 	}
 	
 	public GraphicString(String init, int size, String texLocation) throws FileNotFoundException, IOException{
 		
-		this();
+		this(size);
 		
 		CharacterLoader loader = new CharacterLoader(texLocation);
 		
@@ -27,7 +30,7 @@ public class GraphicString extends ShapeGroup {
 			
 			c = init.charAt(0);
 			if(c == ' ')
-				addPoint.move(SPACE_WIDTH, 0);
+				addPoint.move(SPACE_WIDTH*(size/(float)CharacterLoader.HEIGHT), 0);
 			else if(c == '\n')
 				addNewline();
 			else
@@ -44,7 +47,7 @@ public class GraphicString extends ShapeGroup {
 	
 	public void addNewline(){
 		
-		addPoint.move(0 - addPoint.getX(), CharacterLoader.HEIGHT);
+		addPoint.move(0 - addPoint.getX(), size);
 	}
 	
 
