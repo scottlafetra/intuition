@@ -25,7 +25,7 @@ import com.lafetra.scott.intuition.text.GraphicString;
 public class Game {
 	
 	enum State{
-		PLAYING, RED_WIN, BLUE_WIN, GREEN_WIN
+		MENU, PLAYING, RED_WIN, BLUE_WIN, GREEN_WIN
 	}
 	
 	enum Color{
@@ -64,8 +64,8 @@ public class Game {
 	private Ball blueBall;
 	private Ball greenBall;
 	
-	private GraphicString testString;//TODO: remove
-
+	private ShapeGroup menuText;
+	private boolean escPrimed;
 	
 	public Game(){
 		try{
@@ -90,7 +90,7 @@ public class Game {
 		
 		glClearColor(1, 0, 0, 1);
 		
-		state = State.PLAYING;
+		state = State.MENU;
 		threePlayer = false;
 		redPoints = 0.5f;
 		bluePoints = 0.5f;
@@ -148,12 +148,23 @@ public class Game {
 		goal.move(WIDTH/2.0, HEIGHT*(1.0/4.0) - WALL_WIDTH/2.0 - 60);
 		goal.addTo(scene, physics);
 		
-		//TODO:Remove, for testing only
+		menuText = new ShapeGroup();
+		
+		int menuBuff = 10;
 		try{
-			CharacterLoader loader = new CharacterLoader("text.png");//TODO: Make dynamic, remove small text case if it is not necessary
-			testString = new GraphicString("w-a-s-d to move,\nspace to jump.", 50, "text.png");
-			testString.move(WIDTH/8.0, HEIGHT/4.0 + HEIGHT/8.0);
-			scene.add(testString);
+			CharacterLoader loader = new CharacterLoader("text.png");
+			GraphicString text = new GraphicString("menu", 50, loader);
+			text.move(WALL_WIDTH + menuBuff , WALL_WIDTH + menuBuff);
+			menuText.add(text);
+			
+			text = new GraphicString("w-a-s-d to control red\n" +
+									 "arrow keys to control blue\n" + 
+									 "u-h-j-k to control green\n" + 
+									 "esc to go to menu or exit\n\n" +
+									 "score a win by making the backround match your own color\n" +
+									 "change color by guiding your ball through the hoop", 20, loader);
+			text.move(WALL_WIDTH + menuBuff , WALL_WIDTH + menuBuff + 50);
+			menuText.add(text);
 			
 		} catch (FileNotFoundException e){
 			e.printStackTrace();
@@ -167,11 +178,14 @@ public class Game {
 	public void run(){
 		while(!Display.isCloseRequested()){
 			events();
-			physics.process();
-			
+			physics.process();/*
+			if(redBall.getY() < 0 || blueBall.getY() < 0)
+				System.out.println("--POPPED OUT--");
+			System.out.println("Red:  " + redBall.getVelocity().getX() + ", " + redBall.getVelocity().getY());
+			System.out.println("Blue: " + blueBall.getVelocity().getX() + ", " + blueBall.getVelocity().getY());*/
 			if(state == State.PLAYING)
 				checkScoring();
-			else
+			else if(state == State.BLUE_WIN||state == State.RED_WIN||state == State.GREEN_WIN)
 				winAnimation();
 			
 			render();
@@ -241,41 +255,80 @@ public class Game {
 		
 		back.draw();
 		scene.draw();
-		//testChar.draw();
+		if(state == State.MENU)
+			menuText.draw();
 
 		Display.update();
 		Display.sync(120);//max FPS
 	}
 	
 	private void events(){
-		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-			Display.destroy();
-			System.exit(0);
-		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_D)){ redBall.applyForce( MOVE_FORCE,  0); } 
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)){ redBall.applyForce(-MOVE_FORCE,  0); }
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)){ redBall.applyForce( 0, -MOVE_FORCE); } 
-		if(Keyboard.isKeyDown(Keyboard.KEY_S)){ redBall.applyForce( 0,  MOVE_FORCE); } 
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){ blueBall.applyForce( MOVE_FORCE,  0); } 
-		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){  blueBall.applyForce(-MOVE_FORCE,  0); }
-		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){    blueBall.applyForce( 0, -MOVE_FORCE); } 
-		if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){  blueBall.applyForce( 0,  MOVE_FORCE); }
-		
-		if(threePlayer){
-			if(Keyboard.isKeyDown(Keyboard.KEY_K)){ greenBall.applyForce( MOVE_FORCE,  0); } 
-			if(Keyboard.isKeyDown(Keyboard.KEY_H)){ greenBall.applyForce(-MOVE_FORCE,  0); }
-			if(Keyboard.isKeyDown(Keyboard.KEY_U)){ greenBall.applyForce( 0, -MOVE_FORCE); } 
-			if(Keyboard.isKeyDown(Keyboard.KEY_J)){ greenBall.applyForce( 0,  MOVE_FORCE); }
-		} else {
-			if(Keyboard.isKeyDown(Keyboard.KEY_K)||
-			   Keyboard.isKeyDown(Keyboard.KEY_H)||
+		if(state == State.MENU){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+				if(!escPrimed){
+					Display.destroy();
+					System.exit(0);
+				}
+				
+			} else 
+				escPrimed = false;
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)||
+			   Keyboard.isKeyDown(Keyboard.KEY_A)||
+			   Keyboard.isKeyDown(Keyboard.KEY_S)||
+			   Keyboard.isKeyDown(Keyboard.KEY_D)||
+			   Keyboard.isKeyDown(Keyboard.KEY_UP)||
+			   Keyboard.isKeyDown(Keyboard.KEY_LEFT)||
+			   Keyboard.isKeyDown(Keyboard.KEY_RIGHT)||
+			   Keyboard.isKeyDown(Keyboard.KEY_DOWN)||
+			   Keyboard.isKeyDown(Keyboard.KEY_K)||
 			   Keyboard.isKeyDown(Keyboard.KEY_U)||
-			   Keyboard.isKeyDown(Keyboard.KEY_J))
-				addThridPlayer();
+			   Keyboard.isKeyDown(Keyboard.KEY_J)||
+			   Keyboard.isKeyDown(Keyboard.KEY_H))
+				state = State.PLAYING;	   
+		} else {
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+				if(!escPrimed){
+					state = State.MENU;
+					escPrimed = true;
+				}
+			} else
+				escPrimed = false;
+			
+			/*
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)){ scene.move( 5, 0); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3)){ scene.move(-5, 0); }
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD5)){ scene.move( 0, 5); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)){ scene.move( 0,-5); } */
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_D)){ redBall.applyForce( MOVE_FORCE,  0); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_A)){ redBall.applyForce(-MOVE_FORCE,  0); }
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)){ redBall.applyForce( 0, -MOVE_FORCE); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_S)){ redBall.applyForce( 0,  MOVE_FORCE); } 
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){ blueBall.applyForce( MOVE_FORCE,  0); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){  blueBall.applyForce(-MOVE_FORCE,  0); }
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP)){    blueBall.applyForce( 0, -MOVE_FORCE); } 
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){  blueBall.applyForce( 0,  MOVE_FORCE); }
+			
+			if(threePlayer){
+				if(Keyboard.isKeyDown(Keyboard.KEY_K)){ greenBall.applyForce( MOVE_FORCE,  0); } 
+				if(Keyboard.isKeyDown(Keyboard.KEY_H)){ greenBall.applyForce(-MOVE_FORCE,  0); }
+				if(Keyboard.isKeyDown(Keyboard.KEY_U)){ greenBall.applyForce( 0, -MOVE_FORCE); } 
+				if(Keyboard.isKeyDown(Keyboard.KEY_J)){ greenBall.applyForce( 0,  MOVE_FORCE); }
+			} else {
+				if(Keyboard.isKeyDown(Keyboard.KEY_K)||
+				   Keyboard.isKeyDown(Keyboard.KEY_H)||
+				   Keyboard.isKeyDown(Keyboard.KEY_U)||
+				   Keyboard.isKeyDown(Keyboard.KEY_J))
+					addThridPlayer();
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_G)){  addThridPlayer(); }
 		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_G)){  addThridPlayer(); }
 	}
 	
 	private void checkScoring(){

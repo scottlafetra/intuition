@@ -244,7 +244,9 @@ public class TangibleGroup extends PhysicsGroup implements Tangible{
 		} else if (vel.getX() < 0){
 			move(correct.getRightLimit() - toUse.getLeftLimit() , 0);
 			setVelocity(0, getVelocity().getY());
-		} 
+		} else {
+			System.out.println("BANG!");
+		}
 		
 		 
 	}
@@ -257,12 +259,14 @@ public class TangibleGroup extends PhysicsGroup implements Tangible{
 		
 		//correct y location
 		if(vel.getY() > 0){
-				move(0, correct.getUpLimit() - toUse.getDownLimit());
-				setVelocity(getVelocity().getX(), 0);
+			move(0, correct.getUpLimit() - toUse.getDownLimit());
+			setVelocity(getVelocity().getX(), 0);
 			
 		} else if (vel.getY() < 0){
-				move(0, correct.getDownLimit() - toUse.getUpLimit());
-				setVelocity(getVelocity().getX(), 0);
+			move(0, correct.getDownLimit() - toUse.getUpLimit());
+			setVelocity(getVelocity().getX(), 0);
+		} else {
+			System.out.println("BANG!");
 		}
 	}
 

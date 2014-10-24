@@ -1,8 +1,5 @@
 package com.lafetra.scott.intuition.text;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import com.lafetra.scott.intuition.geom.Point;
 import com.lafetra.scott.intuition.geom.ShapeGroup;
 
@@ -20,11 +17,8 @@ public class GraphicString extends ShapeGroup {
 		this.size = size;
 	}
 	
-	public GraphicString(String init, int size, String texLocation) throws FileNotFoundException, IOException{
-		
+	public GraphicString(String init, int size, CharacterLoader loader){
 		this(size);
-		
-		CharacterLoader loader = new CharacterLoader(texLocation);
 		
 		for(char c; init.length() > 0; init = init.substring(1)){
 			
@@ -45,8 +39,7 @@ public class GraphicString extends ShapeGroup {
 		addPoint.move(character.getWidth(), 0);
 	}
 	
-	public void addNewline(){
-		
+	public void addNewline(){	
 		addPoint.move(0 - addPoint.getX(), size);
 	}
 	

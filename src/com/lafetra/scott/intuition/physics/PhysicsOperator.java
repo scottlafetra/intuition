@@ -57,12 +57,14 @@ public class PhysicsOperator {
 	public void process(){
 		double time = (System.currentTimeMillis() - lastTime)/1000.0;//Get time elapsed in seconds
 		
-		//Add gravity for members
+		//Add gravity (non-tangible)
 		for(Physical item : nonTangible){
 			if(gravity)
 				applyGravity(item);
 		}
-		for(Tangible item : tangible){//And friction
+		
+		//Add friction and gravity (tangible)
+		for(Tangible item : tangible){
 			if(!item.isFixed()){
 				if(gravity)
 					applyGravity(item);
@@ -84,14 +86,15 @@ public class PhysicsOperator {
 			calcVelAndPos(item);
 		}
 		for(Tangible item : tangible){
-			boolean contact = false; // keep track of contact
-			
 			calcVelAndPos(item);
 			
+			item.setContact(false);//Reset contact
+			
 			Point vel = item.getVelocity();
-			item.smearMove(vel.getX()*time*METERS_PER_PIXEL, 0);//Move x
+			
 			
 			if(vel.getX() != 0){
+				item.smearMove(vel.getX()*time*METERS_PER_PIXEL, 0);//Move x
 				//Check Collision x
 				for(Tangible item2 : tangible){
 					
@@ -99,9 +102,9 @@ public class PhysicsOperator {
 					
 					if(item.inBounds(item2.getTotalBounds())){
 						if(!item2.isFixed())
-							transferForce(item, item2, true);
+							transferMomentum(item, item2, true);
 						item.correctXTo(item2.getTotalBounds());
-						contact = true;
+						item.setContact(true);
 					}
 				}
 			}
@@ -109,24 +112,27 @@ public class PhysicsOperator {
 			item.releaseSmear();
 			
 			vel = item.getVelocity();
-			item.smearMove(0, vel.getY()*time*METERS_PER_PIXEL);//Move y
 			
-			//Check Collision y
 			if(vel.getY() != 0){
+				
+				item.smearMove(0, vel.getY()*time*METERS_PER_PIXEL);//Move y
+				
+				//Check Collision y
 				for(Tangible item2 : tangible){
 					
 					if(item == item2) continue;
 					
+					
 					if(item.inBounds(item2.getTotalBounds())){
+						
 						if(!item2.isFixed())
-							transferForce(item, item2, false);
+							transferMomentum(item, item2, false);
+						
 						item.correctYTo(item2.getTotalBounds());
-						contact = true;
+						item.setContact(true);
 					}
 				}
 			}
-			
-			item.setContact(contact);//Finish up contact
 			
 			item.releaseSmear();
 		}
@@ -174,7 +180,7 @@ public class PhysicsOperator {
 		gravity = toSet;
 	}
 	
-	private void transferForce(Tangible from, Tangible to, boolean x){//For transfering all force via static collision
+	private void transferMomentum(Tangible from, Tangible to, boolean x){//For transferring all force via static collision
 		
 		if(x){
 			to.setVelocity((from.getMass() * from.getVelocity().getX())/to.getMass() + to.getVelocity().getX(), 0);
